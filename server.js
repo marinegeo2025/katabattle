@@ -3,97 +3,68 @@ const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 1988;
+const PORT = process.env.PORT || 3000;
 
+// ✅ Middleware
 app.use(express.json());
 app.use(cors());
+
+// ✅ Serve static files (like index.html, script.js, style.css)
 app.use(express.static("public"));
 
-const NAMES_FILE = "names.json";
-const RANKINGS_FILE = "rankings.json";
+// ✅ File Path for Name Storage
+const FILE_PATH = "names.json";
 
-let battleFighters = []; // Store the current Kata battle fighters
-
-// Load data from JSON file
-function loadData(file) {
+// ✅ Load names from file
+function loadNames() {
     try {
-        return JSON.parse(fs.readFileSync(file, "utf8"));
+        let data = fs.readFileSync(FILE_PATH, "utf8");
+        return JSON.parse(data);
     } catch (err) {
-        console.error(`Error loading ${file}:`, err);
+        console.error("Error loading names.json:", err);
         return [];
     }
 }
 
-// Save data to JSON file
-function saveData(file, data) {
-    fs.writeFileSync(file, JSON.stringify(data, null, 2));
+// ✅ Save names to file
+function saveNames(names) {
+    try {
+        fs.writeFileSync(FILE_PATH, JSON.stringify(names, null, 2), "utf8");
+    } catch (err) {
+        console.error("Error saving names.json:", err);
+    }
 }
 
-// ✅ GET: Retrieve all names
+// ✅ GET API: Retrieve all names
 app.get("/names", (req, res) => {
-    res.json(loadData(NAMES_FILE));
+    console.log("✅ GET /names called");
+    res.json(loadNames());
 });
 
-// ✅ GET: Retrieve all rankings
-app.get("/rankings", (req, res) => {
-    res.json(loadData(RANKINGS_FILE));
+// ✅ POST API: Add a new name
+app.post("/names", (req, res) => {
+    let names = loadNames();
+    const newName = req.body.name.trim();
+
+    if (!newName) {
+        return res.status(400).json({ message: "Invalid name" });
+    }
+    if (names.includes(newName)) {
+        return res.status(400).json({ message: "Name already exists" });
+    }
+
+    names.push(newName);
+    saveNames(names);
+    console.log("✅ Name added:", newName);
+
+    res.json({ message: "Name added", names });
 });
 
-// ✅ POST: Submit a ranking
-app.post("/submit-ranking", (req, res) => {
-    let rankings = loadData(RANKINGS_FILE);
-    const submittedRankings = req.body;
-
-    // Ensure we are ranking exactly 2 fighters
-    if (!Array.isArray(submittedRankings) || submittedRankings.length !== 2) {
-        return res.status(400).json({ message: "Invalid data. Rank exactly 2 fighters." });
-    }
-
-    // Validate ranking data
-    for (const { name, score } of submittedRankings) {
-        if (!battleFighters.includes(name) || score < 1 || score > 10) {
-            return res.status(400).json({ message: "Invalid data. Rank only the battle fighters with scores from 1-10." });
-        }
-        rankings.push({ name, score });
-    }
-
-    saveData(RANKINGS_FILE, rankings);
-
-    // ✅ Check if all rankings are submitted
-    const totalParticipants = loadData(NAMES_FILE).length;
-    const totalRankingsNeeded = totalParticipants * 2; // Each fighter needs to be ranked by all participants
-
-    if (rankings.length >= totalRankingsNeeded) {
-        return res.json({ message: "All rankings submitted. Winner can now be declared!" });
-    }
-
-    res.json({ message: "Ranking submitted.", remaining: totalRankingsNeeded - rankings.length });
-});
-
-// ✅ POST: Set fighters for ranking
-app.post("/set-battle-fighters", (req, res) => {
-    if (!req.body.fighters || req.body.fighters.length !== 2) {
-        return res.status(400).json({ message: "You must select exactly 2 fighters for the battle." });
-    }
-    battleFighters = req.body.fighters;
-    res.json({ message: "Battle fighters set." });
-});
-
-// ✅ GET: Retrieve selected fighters
-app.get("/battle-fighters", (req, res) => {
-    if (battleFighters.length === 2) {
-        res.json(battleFighters);
-    } else {
-        res.status(400).json({ message: "No fighters selected for ranking." });
-    }
-});
-
-// ✅ DELETE: Reset all data
-app.delete("/reset", (req, res) => {
-    saveData(NAMES_FILE, []);
-    saveData(RANKINGS_FILE, []);
-    battleFighters = [];
-    res.json({ message: "App has been reset." });
+// ✅ DELETE API: Reset the list (optional)
+app.delete("/names", (req, res) => {
+    saveNames([]);
+    console.log("✅ Name list cleared");
+    res.json({ message: "All names cleared" });
 });
 
 // ✅ Start the server

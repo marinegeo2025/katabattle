@@ -59,30 +59,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // ✅ Handle Kata Battle Button Click
-  kataBattleButton.addEventListener("click", () => {
-    if (names.length < 2) return;
+    kataBattleButton.addEventListener("click", () => {
+        if (names.length < 2) return;
 
-    let shuffledNames = [...names].sort(() => 0.5 - Math.random());
-    let fighterA = shuffledNames[0];
-    let fighterB = shuffledNames[1];
+        let shuffledNames = [...names].sort(() => 0.5 - Math.random());
+        let fighterA = shuffledNames[0];
+        let fighterB = shuffledNames[1];
 
-    kataBattleResult.innerHTML = `
-        <div class="kata-battle-container">
-            <div class="kata-fighter">${fighterA}</div>
-            <div class="kata-vs">⚔ VS ⚔</div>
-            <div class="kata-fighter">${fighterB}</div>
-        </div>
-    `;
-
-    rankingButton.style.display = "block"; // Show the ranking button
-});
-
-// Redirect to ranking page when clicked
-rankingButton.addEventListener("click", () => {
-    window.location.href = "/rankings.html";
-});
-
-
+        kataBattleResult.innerHTML = `
+            <div class="kata-battle-container">
+                <div class="kata-fighter">${fighterA}</div>
+                <div class="kata-vs">⚔ VS ⚔</div>
+                <div class="kata-fighter">${fighterB}</div>
+            </div>
+        `;
+    });
 
     // ✅ Load names on page start
     await fetchNames();
