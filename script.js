@@ -1,66 +1,57 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    const nameInput = document.getElementById("nameInput");
-    const submitButton = document.getElementById("submitButton");
-    const nameList = document.getElementById("nameList");
-    const kataBattleButton = document.getElementById("kataBattleButton");
-    const kataBattleResult = document.getElementById("kataBattleResult");
+// Basic Express server with simple frontend
+const express = require('express');
+const fs = require('fs');
+const cors = require('cors');
+const path = require('path');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    // ✅ Fetch stored names from the server
-    async function fetchNames() {
-        try {
-            const response = await fetch("https://your-glitch-app-name.glitch.me/names");
-            const data = await response.json();
-            updateNameList(data.names);
-        } catch (error) {
-            console.error("Error fetching names:", error);
-        }
+// Enable CORS and JSON body parsing
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+const DATA_FILE = 'names.json';
+
+// Load names from file
+const loadNames = () => {
+    try {
+        return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    } catch (err) {
+        return [];
     }
+};
 
-    // ✅ Update the list visually
-    function updateNameList(names) {
-        nameList.innerHTML = ""; // Clear the list before repopulating
-        names.forEach(name => {
-            const listItem = document.createElement("li");
-            listItem.textContent = name;
-            nameList.appendChild(listItem);
-        });
+// Save names to file
+const saveNames = (names) => {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(names, null, 2));
+};
 
-        // Show the Kata Battle button only if there are 2+ names
-        if (names.length >= 2) {
-            kataBattleButton.style.display = "block";
-        }
-    }
-
-    // ✅ Handle Submit Button Click
-    submitButton.addEventListener("click", async () => {
-        const name = nameInput.value.trim();
-
-        if (name === "") {
-            console.log("No name entered.");
-            return;
-        }
-
-        // ✅ Send the name to the server
-        try {
-            const response = await fetch("https://your-glitch-app-name.glitch.me/add-name", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name }),
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                updateNameList(data.names);
-            } else {
-                console.error("Error adding name:", data.error);
-            }
-        } catch (error) {
-            console.error("Failed to add name:", error);
-        }
-
-        nameInput.value = "";
-    });
-
-    // ✅ Fetch names when the page loads
-    fetchNames();
+// API: Get all names
+app.get('/names', (req, res) => {
+    res.json(loadNames());
 });
+
+// API: Add a new name
+app.post('/names', (req, res) => {
+    const names = loadNames();
+    const newName = req.body.name;
+    if (newName && !names.includes(newName)) {
+        names.push(newName);
+        saveNames(names);
+    }
+    res.json({ success: true, names }); // Ensure response sends back updated names
+});
+
+// API: Reset names list
+app.post('/reset', (req, res) => {
+    saveNames([]);
+    res.json({ success: true, names: [] });
+});
+
+// Serve index.html properly
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
