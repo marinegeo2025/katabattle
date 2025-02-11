@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Karate Name List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&family=Rock+Salt&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&family=Rock+Salt&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- Note: type="module" is needed because we use ES module imports in script.js -->
+    <script type="module" defer src="script.js"></script>
+  </head>
+  <body>
     <div class="container">
-        <h2>Kata Battle</h2>
-      <input type="text" id="nameInput" placeholder="Enter your name" autocomplete="off" autocorrect="off">
-        <button id="submitButton">Submit</button>
-
-        <h3>List of Names:</h3>
-<ul id="nameList"></ul>
-
-
-        <button id="kataBattleButton" style="display: none;">KATA BATTLE</button>
-
-        <h2 id="kataBattleResult"></h2>
+      <h2>Kata Battle</h2>
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="Enter your name"
+        autocomplete="off"
+        autocorrect="off"
+      />
+      <button id="submitButton">Submit</button>
+      <h3>List of Names:</h3>
+      <ul id="nameList"></ul>
+      <button id="kataBattleButton" style="display: none">KATA BATTLE</button>
+      <h2 id="kataBattleResult"></h2>
     </div>
-</body>
-</html>
-<div class="footer">
-    <p id="license">
+
+    <div class="footer">
+      <p id="license">
         This training tool is shared under a
-        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
-            Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-            (CC BY-NC-SA 4.0)
-        </a> licence.
-    </p>
-    <p id="credits">
-        Thanks to Shihan John Murray and students at Stornoway Karate Club
-        (<a href="https://ijka.uk/" target="_blank">IJKA</a>) for the inspiration to create this training tool.
-    </p>
-    <p>
+        <a
+          href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+          target="_blank"
+        >
+          Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+          International (CC BY-NC-SA 4.0)
+        </a>
+        licence.
+      </p>
+      <p id="credits">
+        Thanks to Shihan John Murray and students at Stornoway Karate Club (<a
+          href="https://ijka.uk/"
+          target="_blank"
+          >IJKA</a
+        >) for the inspiration to create this training tool.
+      </p>
+      <p>
         Created by Alex Barnard at Stornoway Karate Club using
         <a href="https://glitch.com/" target="_blank">Glitch</a>.
-    </p>
-    <p class="ossu">OSSU! 🥋</p>
-</div>
-
+      </p>
+      <p class="ossu">OSSU! 🥋</p>
+    </div>
+  </body>
+</html>
