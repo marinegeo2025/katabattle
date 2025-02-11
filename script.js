@@ -1,34 +1,34 @@
-/*
-  This is your site JavaScript code - you can add interactivity!
-*/
+document.addEventListener("DOMContentLoaded", () => {
+    const nameInput = document.getElementById("nameInput");
+    const submitButton = document.getElementById("submitButton");
+    const nameList = document.getElementById("nameList");
+    const kataBattleButton = document.getElementById("kataBattleButton");
+    const kataBattleResult = document.getElementById("kataBattleResult");
 
-// Print a message in the browser's dev tools console each time the page loads
-// Use your menus or right-click / control-click and choose "Inspect" > "Console"
-console.log("Hello 🌎");
+    let names = [];
 
-/* 
-Make the "Click me!" button move when the visitor clicks it:
-- First add the button to the page by following the steps in the TODO 🚧
-*/
-const btn = document.querySelector("button"); // Get the button from the page
-if (btn) { // Detect clicks on the button
-  btn.onclick = function () {
-    // The 'dipped' class in style.css changes the appearance on click
-    btn.classList.toggle("dipped");
-  };
-}
+    submitButton.addEventListener("click", () => {
+        const name = nameInput.value.trim(); 
+        if (name !== "" && !names.includes(name)) { 
+            names.push(name);
+            const listItem = document.createElement("li");
+            listItem.textContent = name;
+            nameList.appendChild(listItem);
+            nameInput.value = "";
 
+            if (names.length >= 2) {
+                kataBattleButton.style.display = "block";
+            }
+        }
+    });
 
-// ----- GLITCH STARTER PROJECT HELPER CODE -----
+    kataBattleButton.addEventListener("click", () => {
+        if (names.length < 2) return;
 
-// Open file when the link in the preview is clicked
-let goto = (file, line) => {
-  window.parent.postMessage(
-    { type: "glitch/go-to-line", payload: { filePath: file, line: line } }, "*"
-  );
-};
-// Get the file opening button from its class name
-const filer = document.querySelectorAll(".fileopener");
-filer.forEach((f) => {
-  f.onclick = () => { goto(f.dataset.file, f.dataset.line); };
+        let shuffledNames = [...names].sort(() => 0.5 - Math.random());
+        let fighterA = shuffledNames[0];
+        let fighterB = shuffledNames[1];
+
+        kataBattleResult.innerHTML = `<span>${fighterA}</span> 🆚 <span>${fighterB}</span>`;
+    });
 });
