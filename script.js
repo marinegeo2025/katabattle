@@ -1,57 +1,69 @@
-// Basic Express server with simple frontend
-const express = require('express');
-const fs = require('fs');
-const cors = require('cors');
-const path = require('path');
-const app = express();
-const PORT = process.env.PORT || 3000;
+document.addEventListener("DOMContentLoaded", () => {
+    const nameInput = document.getElementById("nameInput");
+    const submitButton = document.getElementById("submitButton");
+    const nameList = document.getElementById("nameList");
+    const kataBattleButton = document.getElementById("kataBattleButton");
+    const kataBattleResult = document.getElementById("kataBattleResult");
 
-// Enable CORS and JSON body parsing
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+    let names = [];
 
-const DATA_FILE = 'names.json';
-
-// Load names from file
-const loadNames = () => {
-    try {
-        return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    } catch (err) {
-        return [];
+    // ✅ Debugging: Ensure elements are correctly selected
+    if (!nameInput || !submitButton || !nameList || !kataBattleButton || !kataBattleResult) {
+        console.error("ERROR: One or more required elements not found!");
+        return;
     }
-};
 
-// Save names to file
-const saveNames = (names) => {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(names, null, 2));
-};
+    // ✅ Handle Submit Button Click
+    submitButton.addEventListener("click", () => {
+        const name = nameInput.value.trim();
 
-// API: Get all names
-app.get('/names', (req, res) => {
-    res.json(loadNames());
+        if (name === "") {
+            console.log("No name entered.");
+            return;
+        }
+
+        if (names.includes(name)) {
+            console.log("Name already exists in the list.");
+            return;
+        }
+
+        console.log("Adding name:", name);
+        names.push(name);
+
+        // ✅ Create a new list item
+        const listItem = document.createElement("li");
+        listItem.textContent = name;
+
+        // ✅ Append the new <li> to the <ul>
+        nameList.appendChild(listItem);
+        console.log("Name added to list.");
+
+        // ✅ Clear input field
+        nameInput.value = "";
+
+        // ✅ Ensure Kata Battle button appears if at least 2 names exist
+        if (names.length >= 2) {
+            kataBattleButton.style.display = "block";
+            console.log("Kata Battle button is now visible.");
+        }
+    });
+
+    // ✅ Handle Kata Battle Button Click
+    kataBattleButton.addEventListener("click", () => {
+        if (names.length < 2) return;
+
+        let shuffledNames = [...names].sort(() => 0.5 - Math.random());
+        let fighterA = shuffledNames[0];
+        let fighterB = shuffledNames[1];
+
+        kataBattleResult.innerHTML = `
+            <div class="kata-battle-container">
+                <div class="kata-fighter">${fighterA}</div>
+                <div class="kata-vs">⚔ VS ⚔</div>
+                <div class="kata-fighter">${fighterB}</div>
+            </div>
+        `;
+    });
+
+    console.log("Script loaded successfully.");
 });
-
-// API: Add a new name
-app.post('/names', (req, res) => {
-    const names = loadNames();
-    const newName = req.body.name;
-    if (newName && !names.includes(newName)) {
-        names.push(newName);
-        saveNames(names);
-    }
-    res.json({ success: true, names }); // Ensure response sends back updated names
-});
-
-// API: Reset names list
-app.post('/reset', (req, res) => {
-    saveNames([]);
-    res.json({ success: true, names: [] });
-});
-
-// Serve index.html properly
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
