@@ -1,14 +1,17 @@
+// Import Firebase functions
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
+// Your Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
-  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDALlweH8VahTiLoCkHov0bpeA4ukDKMaM",
+  authDomain: "katabattle-50e58.firebaseapp.com",
+  databaseURL: "https://katabattle-50e58-default-rtdb.firebaseio.com",
+  projectId: "katabattle-50e58",
+  storageBucket: "katabattle-50e58.appspot.com",
+  messagingSenderId: "876037518773",
+  appId: "1:876037518773:web:249f44c14a7792752895fc",
+  measurementId: "G-1027P7BF29"
 };
 
 // ✅ Initialize Firebase
@@ -16,6 +19,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const namesRef = ref(db, "kataNames");
 
+// ✅ Wait until DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
     const nameInput = document.getElementById("nameInput");
     const submitButton = document.getElementById("submitButton");
@@ -70,5 +74,5 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    console.log("Script loaded successfully.");
+    console.log("🔥 Firebase connected and Kata Battle is live!");
 });
