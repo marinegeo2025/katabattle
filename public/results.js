@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let rankings = [];
 
-    // Fetch rankings from server
     async function fetchRankings() {
         try {
             const response = await fetch("/rankings");
@@ -15,38 +14,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Display final results
-   function displayResults() {
-    resultsDiv.innerHTML = "<h3>Kata Battle Results</h3>";
-    rankings.sort((a, b) => b.score - a.score); // Sort rankings by highest score
+    function displayResults() {
+        resultsDiv.innerHTML = "<h3>Kata Battle Results</h3>";
+        rankings.sort((a, b) => b.score - a.score);
 
-    // Display each participant's score
-    rankings.forEach(entry => {
+        rankings.forEach(entry => {
+            resultsDiv.innerHTML += `
+                <div class="result-entry">
+                    <span class="result-name">${entry.name}</span>
+                    <span class="result-score">${entry.score} points</span>
+                </div>
+            `;
+        });
+
+        const winner = rankings[0].name;
         resultsDiv.innerHTML += `
-            <div class="result-entry">
-                <span class="result-name">${entry.name}</span>
-                <span class="result-score">${entry.score} points</span>
+            <div class="winner-container">
+                <h2 class="winner-title">🏆 WINNER: ${winner} 🏆</h2>
             </div>
         `;
-    });
 
-    // Highlight the winner
-    const winner = rankings[0].name;
-    resultsDiv.innerHTML += `
-        <div class="winner-container">
-            <h2 class="winner-title">🏆 WINNER: ${winner} 🏆</h2>
-        </div>
-    `;
+        resetApp.style.display = "block"; // Show Reset Button only after results
+    }
 
-    // Show Reset Button
-    resetApp.style.display = "block";
-}
-
-
-    // Reset app when button is clicked
     resetApp.addEventListener("click", async () => {
-        await fetch("/names", { method: "DELETE" });
-        await fetch("/submit-rankings", { method: "POST", body: JSON.stringify([]) });
+        await fetch("/reset", { method: "DELETE" });
         window.location.href = "/";
     });
 
