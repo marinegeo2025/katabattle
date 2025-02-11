@@ -1,68 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Name Input Form</title>
-    <style>
-        body {
-            padding: 20px;
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        form {
-            margin-bottom: 20px;
-        }
-
-        input {
-            width: 200px;
-            height: 44px;
-            padding: 0 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-right: 8px;
-        }
-
-        button {
-            height: 44px;
-            padding: 0 20px;
-            font-size: 16px;
-            background: #007AFF;
-            color: white;
-            border: none;
-            border-radius: 8px;
-        }
-
-        #namesList {
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <!-- Make sure the viewport is set correctly for iOS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Name List App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1.1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      /* Adding touch-action can help iOS recognize touch events */
+      touch-action: manipulation;
+      /* Ensuring the input is on top of any possible overlapping elements */
+      position: relative;
+      z-index: 10;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 4px;
+      background-color: #007BFF;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    li {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body>
-    <form id="nameForm">
-        <input type="text" id="nameInput" placeholder="Enter your name">
-        <button type="submit">Add</button>
-    </form>
+  <h1>Enter Your Name</h1>
+  <!-- The inline event handlers help ensure that tapping the input triggers focus -->
+  <form id="nameForm">
+    <input type="text"
+           id="nameInput"
+           placeholder="Your Name"
+           required
+           onclick="this.focus()"
+           ontouchstart="this.focus()"
+           ontouchend="this.focus()" />
+    <button type="submit">Add Name</button>
+  </form>
+  <ul id="namesList"></ul>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const nameForm = document.getElementById('nameForm');
+      const nameInput = document.getElementById('nameInput');
+      const namesList = document.getElementById('namesList');
+      
+      // Also attach event listeners via JavaScript for good measure
+      nameInput.addEventListener('touchstart', function(e) {
+        this.focus();
+      });
+      nameInput.addEventListener('touchend', function(e) {
+        this.focus();
+      });
 
-    <div id="namesList"></div>
+      nameForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevents page reload
 
-    <script>
-        document.getElementById('nameForm').onsubmit = function(e) {
-            e.preventDefault();
-            
-            var input = document.getElementById('nameInput');
-            var name = input.value.trim();
-            
-            if (name) {
-                var namesList = document.getElementById('namesList');
-                var newName = document.createElement('div');
-                newName.textContent = name;
-                namesList.appendChild(newName);
-                
-                input.value = '';
-            }
-        };
-    </script>
+        const name = nameInput.value.trim();
+        if (name !== "") {
+          const li = document.createElement('li');
+          li.textContent = name;
+          namesList.appendChild(li);
+          nameInput.value = "";
+        }
+      });
+    });
+  </script>
 </body>
 </html>
