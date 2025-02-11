@@ -34,7 +34,21 @@ input {
     -webkit-appearance: none; /* Removes default styling on iPhone */
     appearance: none; /* Ensures consistency */
 }
+/* Style for the name list */
+#nameList {
+    list-style-type: none !important;  /* Ensures no bullet points */
+    padding: 0 !important;  /* Removes extra spacing */
+    text-align: center !important;  /* Centers text */
+    font-family: 'Rock Salt', cursive !important;  /* Matches "List of Names" */
+}
 
+/* Style for each name */
+#nameList li {
+    font-size: 22px !important;
+    margin: 5px 0 !important;  /* Adds spacing */
+    text-transform: uppercase !important;  /* Optional: Makes text all caps */
+    font-weight: normal !important; /* Ensures normal weight */
+}
 
 button {
     background: #b71c1c;
@@ -115,6 +129,7 @@ button:hover {
     margin-top: 10px;
     color: #ffeb3b;
     text-shadow: 2px 2px 5px rgba(255, 235, 59, 0.8);
-  /* Style for the name list */
+  
+
   
 }
