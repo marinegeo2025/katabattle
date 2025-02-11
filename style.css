@@ -23,11 +23,18 @@ h2, h3 {
 input {
     width: 80%;
     padding: 10px;
-    border: none;
+    border: 2px solid #ff9800;
     border-radius: 5px;
     font-size: 16px;
     text-align: center;
+    background-color: #fff;
+    color: #000;
+    -webkit-user-select: auto;  /* Allows text selection on iPhone */
+    -webkit-touch-callout: default; /* Enables keyboard popup */
+    -webkit-appearance: none; /* Removes default styling on iPhone */
+    appearance: none; /* Ensures consistency */
 }
+
 
 button {
     background: #b71c1c;

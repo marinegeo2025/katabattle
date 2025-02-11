@@ -7,6 +7,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let names = [];
 
+    // ✅ Ensures input box is touchable on iPhone
+    nameInput.style.pointerEvents = "auto"; // In case it's being blocked by another element
+
+    // ✅ Force iPhone to recognize the input field properly
+    nameInput.addEventListener("touchstart", (event) => {
+        event.stopPropagation(); // Prevents interference from other elements
+        nameInput.setAttribute("readonly", "true"); // Temporarily set to readonly
+        nameInput.removeAttribute("readonly"); // Remove readonly (forces keyboard to open)
+        setTimeout(() => {
+            nameInput.focus();
+        }, 50);
+    });
+
+    nameInput.addEventListener("click", (event) => {
+        event.stopPropagation();
+        nameInput.setAttribute("readonly", "true");
+        nameInput.removeAttribute("readonly");
+        setTimeout(() => {
+            nameInput.focus();
+        }, 50);
+    });
+
+    // ✅ Handle Submit Button Click
     submitButton.addEventListener("click", () => {
         const name = nameInput.value.trim(); 
         if (name !== "" && !names.includes(name)) { 
@@ -17,11 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
             nameInput.value = "";
 
             if (names.length >= 2) {
-                kataBattleButton.style.display = "block";
+                kataBattleButton.style.display = "block"; // Show Kata Battle Button
             }
         }
     });
 
+    // ✅ Handle Kata Battle Button Click
     kataBattleButton.addEventListener("click", () => {
         if (names.length < 2) return;
 
