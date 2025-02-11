@@ -29,6 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
         let fighterA = shuffledNames[0];
         let fighterB = shuffledNames[1];
 
-        kataBattleResult.innerHTML = `<span>${fighterA}</span> 🆚 <span>${fighterB}</span>`;
+        kataBattleResult.innerHTML = `
+            <div class="kata-battle-container">
+                <div class="kata-fighter">${fighterA}</div>
+                <div class="kata-vs">⚔ VS ⚔</div>
+                <div class="kata-fighter">${fighterB}</div>
+            </div>
+        `;
     });
 });

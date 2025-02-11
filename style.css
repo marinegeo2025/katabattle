@@ -9,15 +9,15 @@ body {
 .container {
     max-width: 400px;
     margin: auto;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.7);
 }
 
 h2, h3 {
     font-family: 'Rock Salt', cursive;
-    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.6);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 
 input {
@@ -33,14 +33,18 @@ button {
     background: #b71c1c;
     color: white;
     border: 2px solid #9c0000;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 12px 25px;
     margin-top: 10px;
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease-in-out;
+    display: block;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 button:hover {
@@ -48,18 +52,60 @@ button:hover {
     transform: scale(1.1);
 }
 
-#kataBattleResult {
-    font-size: 30px;
-    font-weight: bold;
+/* Kata Battle Result Styling */
+.kata-battle-container {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.kata-fighter {
+    font-size: 40px;
+    font-weight: bold;
+    padding: 15px 20px;
+    background: linear-gradient(45deg, #ff5722, #ff9800);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 3px 3px 10px rgba(255, 87, 34, 0.7);
+    text-transform: uppercase;
+    font-family: 'Rock Salt', cursive;
+    text-align: center;
+    display: inline-block;
+    max-width: 90%;  /* Prevents it from being too wide */
+    width: auto;  /* Automatically resizes */
+    white-space: normal; /* Allows text to wrap */
+    word-wrap: break-word; /* Ensures long names don't overflow */
+}
+
+.kata-vs {
+    font-size: 50px;
+    font-weight: bold;
     color: #ffeb3b;
+    text-shadow: 3px 3px 10px rgba(255, 235, 59, 0.8);
+    margin: 20px 0;
+}
+.footer {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 30px;
+    color: #bbb;
     font-family: 'Rock Salt', cursive;
 }
 
-#kataBattleResult span {
-    background: #ff5722;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 24px;
+.footer a {
+    color: #ff9800;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.ossu {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #ffeb3b;
+    text-shadow: 2px 2px 5px rgba(255, 235, 59, 0.8);
 }
