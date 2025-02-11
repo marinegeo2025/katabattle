@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const nameInput = document.getElementById("nameInput");
     const submitButton = document.getElementById("submitButton");
     const nameList = document.getElementById("nameList");
@@ -7,44 +7,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let names = [];
 
-    // ✅ Debugging: Ensure elements are correctly selected
-    if (!nameInput || !submitButton || !nameList || !kataBattleButton || !kataBattleResult) {
-        console.error("ERROR: One or more required elements not found!");
-        return;
+    // ✅ Fetch stored names from the backend
+    async function fetchNames() {
+        try {
+            const response = await fetch("/names");
+            names = await response.json();
+            console.log("Fetched names:", names);
+            updateNameList();
+        } catch (err) {
+            console.error("Error fetching names:", err);
+        }
     }
 
-    // ✅ Handle Submit Button Click
-    submitButton.addEventListener("click", () => {
+    // ✅ Update the list in the UI
+    function updateNameList() {
+        nameList.innerHTML = ""; // Clear old list
+        names.forEach(name => {
+            const listItem = document.createElement("li");
+            listItem.textContent = name;
+            nameList.appendChild(listItem);
+        });
+
+        // Show Kata Battle button if at least 2 names exist
+        kataBattleButton.style.display = names.length >= 2 ? "block" : "none";
+    }
+
+    // ✅ Handle adding new names
+    submitButton.addEventListener("click", async () => {
         const name = nameInput.value.trim();
+        if (!name) return;
 
-        if (name === "") {
-            console.log("No name entered.");
-            return;
-        }
+        try {
+            const response = await fetch("/names", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name })
+            });
 
-        if (names.includes(name)) {
-            console.log("Name already exists in the list.");
-            return;
-        }
-
-        console.log("Adding name:", name);
-        names.push(name);
-
-        // ✅ Create a new list item
-        const listItem = document.createElement("li");
-        listItem.textContent = name;
-
-        // ✅ Append the new <li> to the <ul>
-        nameList.appendChild(listItem);
-        console.log("Name added to list.");
-
-        // ✅ Clear input field
-        nameInput.value = "";
-
-        // ✅ Ensure Kata Battle button appears if at least 2 names exist
-        if (names.length >= 2) {
-            kataBattleButton.style.display = "block";
-            console.log("Kata Battle button is now visible.");
+            const result = await response.json();
+            if (response.ok) {
+                names = result.names;
+                updateNameList();
+                nameInput.value = "";
+                console.log("Name successfully added.");
+            } else {
+                console.error("Error adding name:", result.message);
+            }
+        } catch (err) {
+            console.error("Request failed:", err);
         }
     });
 
@@ -65,5 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    console.log("Script loaded successfully.");
+    // ✅ Load names on page start
+    await fetchNames();
 });
