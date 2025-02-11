@@ -1,20 +1,38 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const nameInput = document.getElementById("nameInput");
     const submitButton = document.getElementById("submitButton");
     const nameList = document.getElementById("nameList");
     const kataBattleButton = document.getElementById("kataBattleButton");
     const kataBattleResult = document.getElementById("kataBattleResult");
 
-    let names = [];
+    // ✅ Fetch stored names from the server
+    async function fetchNames() {
+        try {
+            const response = await fetch("https://your-glitch-app-name.glitch.me/names");
+            const data = await response.json();
+            updateNameList(data.names);
+        } catch (error) {
+            console.error("Error fetching names:", error);
+        }
+    }
 
-    // ✅ Debugging: Ensure elements are correctly selected
-    if (!nameInput || !submitButton || !nameList || !kataBattleButton || !kataBattleResult) {
-        console.error("ERROR: One or more required elements not found!");
-        return;
+    // ✅ Update the list visually
+    function updateNameList(names) {
+        nameList.innerHTML = ""; // Clear the list before repopulating
+        names.forEach(name => {
+            const listItem = document.createElement("li");
+            listItem.textContent = name;
+            nameList.appendChild(listItem);
+        });
+
+        // Show the Kata Battle button only if there are 2+ names
+        if (names.length >= 2) {
+            kataBattleButton.style.display = "block";
+        }
     }
 
     // ✅ Handle Submit Button Click
-    submitButton.addEventListener("click", () => {
+    submitButton.addEventListener("click", async () => {
         const name = nameInput.value.trim();
 
         if (name === "") {
@@ -22,48 +40,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (names.includes(name)) {
-            console.log("Name already exists in the list.");
-            return;
+        // ✅ Send the name to the server
+        try {
+            const response = await fetch("https://your-glitch-app-name.glitch.me/add-name", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                updateNameList(data.names);
+            } else {
+                console.error("Error adding name:", data.error);
+            }
+        } catch (error) {
+            console.error("Failed to add name:", error);
         }
 
-        console.log("Adding name:", name);
-        names.push(name);
-
-        // ✅ Create a new list item
-        const listItem = document.createElement("li");
-        listItem.textContent = name;
-
-        // ✅ Append the new <li> to the <ul>
-        nameList.appendChild(listItem);
-        console.log("Name added to list.");
-
-        // ✅ Clear input field
         nameInput.value = "";
-
-        // ✅ Ensure Kata Battle button appears if at least 2 names exist
-        if (names.length >= 2) {
-            kataBattleButton.style.display = "block";
-            console.log("Kata Battle button is now visible.");
-        }
     });
 
-    // ✅ Handle Kata Battle Button Click
-    kataBattleButton.addEventListener("click", () => {
-        if (names.length < 2) return;
-
-        let shuffledNames = [...names].sort(() => 0.5 - Math.random());
-        let fighterA = shuffledNames[0];
-        let fighterB = shuffledNames[1];
-
-        kataBattleResult.innerHTML = `
-            <div class="kata-battle-container">
-                <div class="kata-fighter">${fighterA}</div>
-                <div class="kata-vs">⚔ VS ⚔</div>
-                <div class="kata-fighter">${fighterB}</div>
-            </div>
-        `;
-    });
-
-    console.log("Script loaded successfully.");
+    // ✅ Fetch names when the page loads
+    fetchNames();
 });
