@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // ✅ Handle Kata Battle Button Click
-   kataBattleButton.addEventListener("click", () => {
+  kataBattleButton.addEventListener("click", () => {
     if (names.length < 2) return;
 
     let shuffledNames = [...names].sort(() => 0.5 - Math.random());
@@ -74,25 +74,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
     `;
 
-    resetButton.style.display = "block"; // Show reset button
+    rankingButton.style.display = "block"; // Show the ranking button
 });
 
-  const resetButton = document.getElementById("resetButton");
-
-resetButton.addEventListener("click", async () => {
-    try {
-        await fetch("https://atlantic-swamp-peace.glitch.me/names", { 
-            method: "DELETE" 
-        });
-        names = [];  // Clear local names
-        updateNameList();  // Refresh UI
-        kataBattleResult.innerHTML = ""; // Clear battle result
-        resetButton.style.display = "none";  // Hide reset button
-        kataBattleButton.style.display = "none"; // Hide battle button
-    } catch (err) {
-        console.error("Reset failed:", err);
-    }
+// Redirect to ranking page when clicked
+rankingButton.addEventListener("click", () => {
+    window.location.href = "/rankings.html";
 });
+
 
 
     // ✅ Load names on page start

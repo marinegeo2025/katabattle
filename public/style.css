@@ -130,6 +130,42 @@ button:hover {
     color: #ffeb3b;
     text-shadow: 2px 2px 5px rgba(255, 235, 59, 0.8);
   
+.result-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin: 5px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
 
+.result-name {
+    font-family: 'Rock Salt', cursive;
+    color: #ff9800;
+}
+
+.result-score {
+    font-family: 'Noto Serif JP', serif;
+    color: #fff;
+}
+
+.winner-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: linear-gradient(45deg, #ff5722, #ff9800);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 4px 4px 10px rgba(255, 87, 34, 0.7);
+    text-align: center;
+}
+
+.winner-title {
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Rock Salt', cursive;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
   
 }
