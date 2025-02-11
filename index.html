@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minimal Input Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kata Battle</title>
+    <script>
+        async function fetchNames() {
+            const response = await fetch('/names');
+            const names = await response.json();
+            document.getElementById('nameList').innerHTML = names.map(n => `<li>${n}</li>`).join('');
+        }
+
+        async function addName() {
+            const name = document.getElementById('nameInput').value.trim();
+            if (!name) return;
+            
+            await fetch('/names', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name })
+            });
+
+            document.getElementById('nameInput').value = ''; // Clear input
+            fetchNames(); // Refresh list
+        }
+
+        async function resetNames() {
+            await fetch('/reset', { method: 'POST' });
+            fetchNames(); // Refresh list
+        }
+
+        window.onload = fetchNames;
+    </script>
 </head>
 <body>
-  <input type="text" placeholder="Type here..." style="padding: 10px; font-size: 1.2em; width: 90%; max-width: 400px; border: 1px solid #ccc;">
+    <h1>Kata Battle</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name">
+    <button onclick="addName()">Submit</button>
+    <ul id="nameList"></ul>
+    <button onclick="resetNames()" style="margin-top:20px;">Reset (Admin)</button>
 </body>
 </html>
