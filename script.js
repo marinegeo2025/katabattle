@@ -5,13 +5,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const kataBattleButton = document.getElementById("kataBattleButton");
     const kataBattleResult = document.getElementById("kataBattleResult");
 
-    let names = [];
+    let names = JSON.parse(localStorage.getItem("kataNames")) || []; // Load saved names
 
-    // ✅ Debugging: Ensure elements are correctly selected
-    if (!nameInput || !submitButton || !nameList || !kataBattleButton || !kataBattleResult) {
-        console.error("ERROR: One or more required elements not found!");
-        return;
+    // ✅ Function to update the name list in the UI
+    function updateNameList() {
+        nameList.innerHTML = ""; // Clear current list
+        names.forEach(name => {
+            const listItem = document.createElement("li");
+            listItem.textContent = name;
+            nameList.appendChild(listItem);
+        });
+
+        // ✅ Ensure Kata Battle button appears if at least 2 names exist
+        kataBattleButton.style.display = names.length >= 2 ? "block" : "none";
     }
+
+    // ✅ Load names on page load
+    updateNameList();
 
     // ✅ Handle Submit Button Click
     submitButton.addEventListener("click", () => {
@@ -29,23 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log("Adding name:", name);
         names.push(name);
+        localStorage.setItem("kataNames", JSON.stringify(names)); // Save to localStorage
 
-        // ✅ Create a new list item
-        const listItem = document.createElement("li");
-        listItem.textContent = name;
-
-        // ✅ Append the new <li> to the <ul>
-        nameList.appendChild(listItem);
-        console.log("Name added to list.");
-
-        // ✅ Clear input field
-        nameInput.value = "";
-
-        // ✅ Ensure Kata Battle button appears if at least 2 names exist
-        if (names.length >= 2) {
-            kataBattleButton.style.display = "block";
-            console.log("Kata Battle button is now visible.");
-        }
+        updateNameList(); // Refresh UI
+        nameInput.value = ""; // Clear input
     });
 
     // ✅ Handle Kata Battle Button Click
