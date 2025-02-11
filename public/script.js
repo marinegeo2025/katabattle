@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ✅ Fetch stored names from the backend
     async function fetchNames() {
         try {
-            const response = await fetch("https://atlantic-swamp-peace.glitch.me/names");
+            const response = await fetch("https://kata-battle-royale.glitch.me/names");
             names = await response.json();
             console.log("Fetched names:", names);
             updateNameList();
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (!name) return;
 
         try {
-            const response = await fetch("https://atlantic-swamp-peace.glitch.me/names", {
+            const response = await fetch("https://kata-battle-royale.glitch.me/names", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name })
