@@ -35,6 +35,24 @@ input {
     appearance: none; /* Ensures consistency */
 }
 
+/* Style for the name list */
+#nameList {
+    list-style-type: none !important;  /* Removes bullet points */
+    padding: 0 !important;  /* Removes extra spacing */
+    text-align: center !important;  /* Centers text */
+    font-family: 'Rock Salt', cursive !important;  /* Matches "List of Names" */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+/* Style for each name */
+#nameList li {
+    font-size: 22px !important;
+    margin: 5px 0 !important;  /* Adds spacing */
+    text-transform: uppercase !important; /* Optional: Makes text all caps */
+    font-weight: normal !important; /* Ensures normal weight */
+}
 
 button {
     background: #b71c1c;

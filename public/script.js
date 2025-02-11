@@ -21,16 +21,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Update the list in the UI
     function updateNameList() {
-        nameList.innerHTML = ""; // Clear old list
-        names.forEach(name => {
-            const listItem = document.createElement("li");
-            listItem.textContent = name;
-            nameList.appendChild(listItem);
-        });
+    nameList.innerHTML = ""; // Clear old list
 
-        // Show Kata Battle button if at least 2 names exist
-        kataBattleButton.style.display = names.length >= 2 ? "block" : "none";
-    }
+    names.forEach(name => {
+        const listItem = document.createElement("li");
+        listItem.textContent = name;
+        listItem.style.textAlign = "center";  // Ensures it's centered
+        listItem.style.listStyleType = "none"; // Removes bullets
+        listItem.style.fontFamily = "'Rock Salt', cursive"; // Matches "List of Names"
+        listItem.style.fontSize = "22px";
+        listItem.style.margin = "5px 0";
+        nameList.appendChild(listItem);
+    });
+
+    // Show Kata Battle button if at least 2 names exist
+    kataBattleButton.style.display = names.length >= 2 ? "block" : "none";
+}
 
     // ✅ Handle adding new names
     submitButton.addEventListener("click", async () => {
