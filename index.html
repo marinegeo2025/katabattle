@@ -2,19 +2,67 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karate Name List</title>
-    <script defer src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Name Input Form</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 200px;
+            height: 44px;
+            padding: 0 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-right: 8px;
+        }
+
+        button {
+            height: 44px;
+            padding: 0 20px;
+            font-size: 16px;
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+        }
+
+        #namesList {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Enter Your First Name</h2>
-    
     <form id="nameForm">
-        <input type="text" id="nameInput" placeholder="Enter your name" autocomplete="off">
-        <button type="submit">Submit</button>
+        <input type="text" id="nameInput" placeholder="Enter your name">
+        <button type="submit">Add</button>
     </form>
 
-    <h3>List of Names:</h3>
-    <ul id="nameList"></ul>
+    <div id="namesList"></div>
+
+    <script>
+        document.getElementById('nameForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            var input = document.getElementById('nameInput');
+            var name = input.value.trim();
+            
+            if (name) {
+                var namesList = document.getElementById('namesList');
+                var newName = document.createElement('div');
+                newName.textContent = name;
+                namesList.appendChild(newName);
+                
+                input.value = '';
+            }
+        };
+    </script>
 </body>
 </html>
