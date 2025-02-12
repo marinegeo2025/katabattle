@@ -20,6 +20,13 @@ h2, h3 {
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 
+  .jp-text {
+    font-size: 10px; /* Adjust to 9px if needed */
+    font-family: "Noto Sans JP", "Yu Gothic", "Hiragino Kaku Gothic Pro", "MS PGothic", sans-serif;
+    letter-spacing: 0.5px; /* Slight spacing for readability */
+    line-height: 1.2; /* Keep text compact but readable */
+  }
+
 input {
     width: 80%;
     padding: 10px;
